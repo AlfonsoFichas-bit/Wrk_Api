@@ -41,5 +41,28 @@ func SetupRoutes(r *gin.Engine) {
 			projects.POST("/:id/members", handlers.AddProjectMember)
 			projects.DELETE("/:id/members/:userId", handlers.RemoveProjectMember)
 		}
+
+		// Sprints
+		sprints := protected.Group("/sprints")
+		{
+			sprints.GET("/", handlers.GetAllSprints)
+			sprints.GET("/:id", handlers.GetSprint)
+			sprints.POST("/", handlers.CreateSprint)
+			sprints.PUT("/:id", handlers.UpdateSprint)
+			sprints.DELETE("/:id", handlers.DeleteSprint)
+			
+			// Sprint Actions
+			sprints.POST("/:id/add-story", handlers.AddStoryToSprint)
+		}
+
+		// User Stories
+		userStories := protected.Group("/user-stories")
+		{
+			userStories.GET("/", handlers.GetAllUserStories)
+			userStories.GET("/:id", handlers.GetUserStory)
+			userStories.POST("/", handlers.CreateUserStory)
+			userStories.PUT("/:id", handlers.UpdateUserStory)
+			userStories.DELETE("/:id", handlers.DeleteUserStory)
+		}
 	}
 }
