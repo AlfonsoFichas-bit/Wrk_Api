@@ -64,5 +64,18 @@ func SetupRoutes(r *gin.Engine) {
 			userStories.PUT("/:id", handlers.UpdateUserStory)
 			userStories.DELETE("/:id", handlers.DeleteUserStory)
 		}
+
+		// Tasks
+		tasks := protected.Group("/tasks")
+		{
+			tasks.GET("/", handlers.GetAllTasks)
+			tasks.GET("/:id", handlers.GetTask)
+			tasks.POST("/", handlers.CreateTask)
+			tasks.PUT("/:id", handlers.UpdateTask)
+			tasks.DELETE("/:id", handlers.DeleteTask)
+
+			// Task Actions
+			tasks.POST("/:id/evaluate", handlers.EvaluateTask)
+		}
 	}
 }

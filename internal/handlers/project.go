@@ -52,6 +52,7 @@ func GetAllProjects(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error al obtener proyectos", "details": result.Error.Error()})
 		return
 	}
+
 	c.JSON(http.StatusOK, projects)
 }
 

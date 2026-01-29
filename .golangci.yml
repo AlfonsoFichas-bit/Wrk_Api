@@ -1,0 +1,5 @@
+version: "2"
+
+run:
+  # Deshabilitar el análisis de archivos de prueba
+  tests: false
