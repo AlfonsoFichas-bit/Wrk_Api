@@ -6,6 +6,7 @@ import (
 
 	"Wrk_Api/internal/database"
 	"Wrk_Api/internal/models"
+	"Wrk_Api/internal/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -63,7 +64,7 @@ func CreateUserStory(c *gin.Context) {
 	}
 
 	story := models.UserStory{
-		ID:          generateCUIDStory(),
+		ID:          utils.GenerateCUID(),
 		Title:       req.Title,
 		Description: req.Description,
 		Acceptance:  &req.Acceptance,
@@ -140,7 +141,7 @@ func UpdateUserStory(c *gin.Context) {
 	// Notification Logic
 	if req.AssigneeID != "" && (previousAssigneeID == nil || *previousAssigneeID != req.AssigneeID) {
 		notification := models.Notification{
-			ID:        generateCUIDStory(),
+			ID:        utils.GenerateCUID(),
 			UserID:    req.AssigneeID,
 			Title:     "Historia de Usuario Asignada",
 			Message:   "Se te ha asignado la historia \"" + story.Title + "\" en el proyecto " + story.Project.Name,
@@ -160,8 +161,4 @@ func DeleteUserStory(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "User story eliminado"})
-}
-
-func generateCUIDStory() string {
-	return generateCUID()
 }

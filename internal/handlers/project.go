@@ -9,6 +9,7 @@ import (
 
 	"Wrk_Api/internal/database"
 	"Wrk_Api/internal/models"
+	"Wrk_Api/internal/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -93,7 +94,7 @@ func CreateProject(c *gin.Context) {
 	}
 
 	project := models.Project{
-		ID:          generateCUIDProject(),
+		ID:          utils.GenerateCUID(),
 		Name:        req.Name,
 		Description: req.Description,
 		OwnerID:     req.OwnerID,
@@ -174,7 +175,7 @@ func AddProjectMember(c *gin.Context) {
 	}
 
 	member := models.ProjectMember{
-		ID:        generateCUIDProject(),
+		ID:        utils.GenerateCUID(),
 		ProjectID: projectID,
 		UserID:    req.UserID,
 		Role:      req.Role,
@@ -190,7 +191,7 @@ func AddProjectMember(c *gin.Context) {
 	database.DB.First(&project, "id = ?", projectID)
 	
 	notification := models.Notification{
-		ID:        generateCUIDProject(),
+		ID:        utils.GenerateCUID(),
 		UserID:    req.UserID,
 		Title:     "Nuevo Proyecto Asignado",
 		Message:   "Has sido añadido al proyecto \"" + project.Name + "\" como " + req.Role,

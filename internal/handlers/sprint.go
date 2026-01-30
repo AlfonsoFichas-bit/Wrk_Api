@@ -6,6 +6,7 @@ import (
 
 	"Wrk_Api/internal/database"
 	"Wrk_Api/internal/models"
+	"Wrk_Api/internal/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -71,7 +72,7 @@ func CreateSprint(c *gin.Context) {
 	}
 
 	sprint := models.Sprint{
-		ID:          generateCUIDSprint(),
+		ID:          utils.GenerateCUID(),
 		Name:        req.Name,
 		Description: req.Description,
 		ProjectID:   req.ProjectID,
@@ -155,9 +156,4 @@ func DeleteSprint(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": gin.H{"message": "Sprint eliminado"}})
-}
-
-// Reuse or duplicate generator for independence
-func generateCUIDSprint() string {
-	return generateCUID() // Assuming generateCUID is accessible or duplicated. Ideally move to utils.
 }

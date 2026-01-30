@@ -77,5 +77,19 @@ func SetupRoutes(r *gin.Engine) {
 			// Task Actions
 			tasks.POST("/:id/evaluate", handlers.EvaluateTask)
 		}
+
+		// Chat
+		chat := protected.Group("/chat")
+		{
+			// Project Chat
+			chat.GET("/:projectId/messages", handlers.GetProjectMessages)
+			chat.POST("/:projectId/messages", handlers.SendProjectMessage)
+
+			// Direct Chat
+			chat.GET("/user/:userId/all", handlers.GetDirectChats)
+			chat.POST("/direct", handlers.CreateOrGetDirectChat)
+			chat.GET("/conversation/:chatId/messages", handlers.GetConversationMessages)
+			chat.POST("/conversation/:chatId/messages", handlers.SendConversationMessage)
+		}
 	}
 }

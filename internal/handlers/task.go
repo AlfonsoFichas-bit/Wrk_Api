@@ -6,6 +6,7 @@ import (
 
 	"Wrk_Api/internal/database"
 	"Wrk_Api/internal/models"
+	"Wrk_Api/internal/utils"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -100,7 +101,7 @@ func CreateTask(c *gin.Context) {
 	}
 
 	task := models.Task{
-		ID:          generateCUIDTask(),
+		ID:          utils.GenerateCUID(),
 		Title:       req.Title,
 		Description: &req.Description,
 		ProjectID:   req.ProjectID,
@@ -128,7 +129,7 @@ func CreateTask(c *gin.Context) {
 	// Notificación
 	if req.AssigneeID != "" {
 		notification := models.Notification{
-			ID:        generateCUIDTask(),
+			ID:        utils.GenerateCUID(),
 			UserID:    req.AssigneeID,
 			Title:     "Nueva Tarea Asignada",
 			Message:   "Se te ha asignado la tarea: " + task.Title,
@@ -217,7 +218,7 @@ func EvaluateTask(c *gin.Context) {
 
 	err := database.DB.Transaction(func(tx *gorm.DB) error {
 		evaluation := models.Evaluation{
-			ID:          generateCUIDTask(),
+			ID:          utils.GenerateCUID(),
 			TaskID:      &taskID,
 			ProjectID:   task.ProjectID,
 			EvaluatorID: req.EvaluatorID,
@@ -234,7 +235,7 @@ func EvaluateTask(c *gin.Context) {
 		if len(req.CriteriaScores) > 0 {
 			for _, cs := range req.CriteriaScores {
 				ec := models.EvaluationCriteria{
-					ID:           generateCUIDTask(),
+					ID:           utils.GenerateCUID(),
 					EvaluationID: evaluation.ID,
 					CriteriaID:   cs.CriteriaID,
 					Score:        cs.Score,
@@ -256,7 +257,7 @@ func EvaluateTask(c *gin.Context) {
 	// Notify Assignee
 	if task.AssigneeID != nil {
 		notification := models.Notification{
-			ID:        generateCUIDTask(),
+			ID:        utils.GenerateCUID(),
 			UserID:    *task.AssigneeID,
 			Title:     "Tarea Evaluada",
 			Message:   "Tu tarea \"" + task.Title + "\" ha sido evaluada",
@@ -267,8 +268,4 @@ func EvaluateTask(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, gin.H{"message": "Evaluación guardada"})
-}
-
-func generateCUIDTask() string {
-	return generateCUID()
 }

@@ -1,15 +1,12 @@
 package handlers
 
 import (
-	"crypto/rand"
-	"encoding/hex"
-	"fmt"
 	"net/http"
-	"os"
 	"time"
 
 	"Wrk_Api/internal/database"
 	"Wrk_Api/internal/models"
+	"Wrk_Api/internal/utils"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
@@ -26,16 +23,6 @@ type RegisterRequest struct {
 type LoginRequest struct {
 	Email    string `json:"email" binding:"required,email"`
 	Password string `json:"password" binding:"required"`
-}
-
-func getJWTSecret() []byte {
-	secret := os.Getenv("JWT_SECRET")
-	if secret == "" {
-		// In a real production app, we might want to panic here or ensure it's set.
-		// For this replication/dev environment, we keep the fallback but it's explicit.
-		return []byte("default_secret_key")
-	}
-	return []byte(secret)
 }
 
 func Register(c *gin.Context) {
@@ -61,7 +48,7 @@ func Register(c *gin.Context) {
 
 	// Create user
 	user := models.User{
-		ID:       generateCUID(),
+		ID:       utils.GenerateCUID(),
 		Name:     req.Name,
 		Email:    req.Email,
 		Password: string(hashedPassword),
@@ -120,7 +107,7 @@ func Login(c *gin.Context) {
 		"exp":    time.Now().Add(time.Hour * 24).Unix(),
 	})
 
-	tokenString, err := token.SignedString(getJWTSecret())
+	tokenString, err := token.SignedString(utils.GetJWTSecret())
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error al generar token"})
 		return
@@ -136,10 +123,4 @@ func Login(c *gin.Context) {
 			"role":  user.Role,
 		},
 	})
-}
-
-func generateCUID() string {
-	b := make([]byte, 12)
-	rand.Read(b)
-	return fmt.Sprintf("c%s", hex.EncodeToString(b))
 }
