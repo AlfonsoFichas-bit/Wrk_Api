@@ -91,5 +91,39 @@ func SetupRoutes(r *gin.Engine) {
 			chat.GET("/conversation/:chatId/messages", handlers.GetConversationMessages)
 			chat.POST("/conversation/:chatId/messages", handlers.SendConversationMessage)
 		}
+
+		// Rubrics
+		rubrics := protected.Group("/rubrics")
+		{
+			rubrics.GET("/", handlers.GetAllRubrics)
+			rubrics.GET("/:id", handlers.GetRubric)
+			rubrics.POST("/", handlers.CreateRubric)
+			rubrics.DELETE("/:id", handlers.DeleteRubric)
+		}
+
+		// Retrospectives
+		retrospectives := protected.Group("/retrospectives")
+		{
+			retrospectives.GET("/:sprintId", handlers.GetSprintRetrospective)
+			retrospectives.POST("/", handlers.CreateRetrospectiveItem)
+			retrospectives.DELETE("/:id", handlers.DeleteRetrospectiveItem)
+		}
+
+		// Documents
+		documents := protected.Group("/documents")
+		{
+			documents.GET("/:projectId", handlers.GetProjectDocuments)
+			documents.POST("/", handlers.UploadDocument)
+			documents.DELETE("/:id", handlers.DeleteDocument)
+		}
+
+		// Metrics
+		metrics := protected.Group("/metrics")
+		{
+			metrics.GET("/sprints/:sprintId/burndown", handlers.GetSprintBurndown)
+			metrics.GET("/projects/:projectId/velocity", handlers.GetProjectVelocity)
+			metrics.GET("/projects/:projectId/contribution", handlers.GetProjectContribution)
+			metrics.GET("/export/projects/:projectId", handlers.ExportProjectCSV)
+		}
 	}
 }
