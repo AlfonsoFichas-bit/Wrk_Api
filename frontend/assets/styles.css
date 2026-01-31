@@ -1,4 +1,22 @@
 @import "tailwindcss";
+
+@theme {
+  --color-primary: #135bec;
+  --color-primary-hover: #1d6bf5;
+  --color-background-light: #f6f6f8;
+  --color-background-dark: #101622;
+  --color-card-dark: #192233;
+  --color-border-dark: #232f48;
+  --color-text-secondary: #92a4c9;
+
+  --font-display: "Inter", "sans-serif";
+
+  --radius-DEFAULT: 0.25rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+}
+
 .fresh-gradient {
   background-color: rgb(134, 239, 172);
   background-image: linear-gradient(
