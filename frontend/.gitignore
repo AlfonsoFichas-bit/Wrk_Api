@@ -11,3 +11,10 @@ _fresh/
 node_modules/
 vendor/
 
+# IDE
+.vscode/
+.idea/
+.qodo/
+
+
+.DS_Store
