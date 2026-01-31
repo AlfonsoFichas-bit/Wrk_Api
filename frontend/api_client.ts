@@ -7,6 +7,26 @@ export interface User {
   createdAt?: string;
 }
 
+export interface Project {
+  id: string;
+  name: string;
+  description?: string;
+  status: string;
+  startDate?: string;
+  endDate?: string;
+  ownerId: string;
+  owner?: User;
+  members?: ProjectMember[];
+}
+
+export interface ProjectMember {
+  id: string;
+  projectId: string;
+  userId: string;
+  role: string;
+  user?: User;
+}
+
 export interface AuthResponse {
   message: string;
   token: string;
@@ -53,6 +73,24 @@ export async function apiFetch<T = any>(endpoint: string, options: RequestInit =
 
   return response.json();
 }
+
+export const projects = {
+  async getAll(memberId?: string): Promise<Project[]> {
+    const url = memberId ? `/projects?memberId=${memberId}` : "/projects";
+    return apiFetch<Project[]>(url);
+  },
+  async getById(id: string): Promise<Project> {
+    const res = await apiFetch<ApiResponse<Project>>(`/projects/${id}`);
+    return res.data;
+  },
+  async create(projectData: Partial<Project>): Promise<Project> {
+    const res = await apiFetch<ApiResponse<Project>>("/projects/", {
+      method: "POST",
+      body: JSON.stringify(projectData),
+    });
+    return res.data;
+  }
+};
 
 export const auth = {
   async login(credentials: any): Promise<AuthResponse> {

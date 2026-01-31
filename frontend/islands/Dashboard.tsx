@@ -35,7 +35,7 @@ export default function Dashboard() {
   if (loading) return <div class="p-8 text-center">Cargando...</div>;
 
   return (
-    <div class="p-8 max-w-4xl mx-auto">
+    <div class="p-8 max-w-6xl mx-auto">
       <div class="flex justify-between items-center mb-8 bg-white p-6 rounded-lg shadow-sm border border-gray-100">
         <h1 class="text-3xl font-bold text-gray-800">Panel de Control</h1>
         <div class="flex items-center gap-4">
@@ -64,6 +64,23 @@ export default function Dashboard() {
           </div>
         </div>
       )}
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+        <a href="/dashboard/projects" class="group bg-primary p-8 rounded-2xl shadow-lg shadow-primary/20 flex items-center justify-between text-white transition-transform hover:scale-[1.02]">
+          <div>
+            <h3 class="text-2xl font-bold mb-2">Mis Proyectos</h3>
+            <p class="text-white/80">Gestiona tus espacios de trabajo y Sprints.</p>
+          </div>
+          <span class="material-symbols-outlined text-4xl opacity-50 group-hover:opacity-100 transition-opacity">folder_shared</span>
+        </a>
+        <div class="bg-white p-8 rounded-2xl border border-gray-200 flex items-center justify-between transition-transform hover:scale-[1.02]">
+          <div>
+            <h3 class="text-2xl font-bold text-gray-900 mb-2">Mi Perfil</h3>
+            <p class="text-gray-500">Configura tus preferencias y rol.</p>
+          </div>
+          <span class="material-symbols-outlined text-4xl text-gray-300">account_circle</span>
+        </div>
+      </div>
 
       <div class="bg-white shadow rounded-lg overflow-hidden border border-gray-200">
         <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
