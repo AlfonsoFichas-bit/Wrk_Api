@@ -21,12 +21,27 @@ export default define.page(function Home(ctx) {
           height="128"
           alt="the Fresh logo: a sliced lemon dripping with juice"
         />
-        <h1 class="text-4xl font-bold">Welcome to Fresh</h1>
-        <p class="my-4">
-          Try updating this message in the
-          <code class="mx-2">./routes/index.tsx</code> file, and refresh.
+        <h1 class="text-4xl font-bold">Welcome to Wrk_Api</h1>
+        <p class="my-4 text-center">
+          Esta es la interfaz para tu API de Gin.
         </p>
-        <Counter count={count} />
+        <div class="flex gap-4 mt-8">
+          <a
+            href="/login"
+            class="px-6 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition-colors"
+          >
+            Iniciar Sesión
+          </a>
+          <a
+            href="/register"
+            class="px-6 py-3 bg-white text-blue-600 border border-blue-600 rounded-lg font-bold hover:bg-blue-50 transition-colors"
+          >
+            Registrarse
+          </a>
+        </div>
+        <div class="mt-12">
+          <Counter count={count} />
+        </div>
       </div>
     </div>
   );
