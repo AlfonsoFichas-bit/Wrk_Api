@@ -27,6 +27,9 @@ func SetupRoutes(r *gin.Engine) {
 		// Users
 		protected.GET("/users", handlers.GetAllUsers)
 		protected.GET("/users/:id", handlers.GetUser)
+		protected.POST("/users/", handlers.CreateUser)
+		protected.PUT("/users/:id", handlers.UpdateUser)
+		protected.DELETE("/users/:id", handlers.DeleteUser)
 
 		// Projects
 		projects := protected.Group("/projects")
@@ -92,6 +95,13 @@ func SetupRoutes(r *gin.Engine) {
 			chat.POST("/conversation/:chatId/messages", handlers.SendConversationMessage)
 		}
 
+		// Notifications
+		notifications := protected.Group("/notifications")
+		{
+			notifications.GET("/", handlers.GetNotifications)
+			notifications.PUT("/:id/read", handlers.MarkNotificationRead)
+		}
+
 		// Rubrics
 		rubrics := protected.Group("/rubrics")
 		{
@@ -99,6 +109,19 @@ func SetupRoutes(r *gin.Engine) {
 			rubrics.GET("/:id", handlers.GetRubric)
 			rubrics.POST("/", handlers.CreateRubric)
 			rubrics.DELETE("/:id", handlers.DeleteRubric)
+		}
+
+		// Evaluations (Module)
+		evaluations := protected.Group("/evaluations")
+		{
+			evaluations.GET("/:id", handlers.GetEvaluation)
+			evaluations.POST("/", handlers.CreateEvaluation)
+			evaluations.PUT("/:id", handlers.UpdateEvaluation)
+			
+			evaluations.GET("/task/:taskId", handlers.GetTaskEvaluations)
+			evaluations.GET("/sprint/:sprintId", handlers.GetSprintEvaluations)
+			evaluations.GET("/project/:projectId/general", handlers.GetProjectEvaluations)
+			evaluations.GET("/student/:studentId", handlers.GetStudentEvaluations)
 		}
 
 		// Retrospectives
