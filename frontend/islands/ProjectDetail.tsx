@@ -1,5 +1,7 @@
 import { useEffect, useState } from "preact/hooks";
 import { projects, type Project } from "../../api_client.ts";
+import UserStoryList from "./UserStoryList.tsx";
+import CreateUserStoryForm from "./CreateUserStoryForm.tsx";
 
 export default function ProjectDetail({ id }: { id: string }) {
   const [project, setProject] = useState<Project | null>(null);
@@ -59,13 +61,12 @@ export default function ProjectDetail({ id }: { id: string }) {
             </div>
           </div>
 
-          <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
-              <h2 class="font-bold text-gray-900">Backlog del Proyecto</h2>
+          <div class="space-y-4">
+            <div class="flex justify-between items-center px-2">
+              <h2 class="text-xl font-bold text-gray-900">Backlog y Historias</h2>
+              <CreateUserStoryForm projectId={id} />
             </div>
-            <div class="p-8 text-center text-gray-500 italic">
-              El backlog está vacío. Empieza a añadir historias de usuario.
-            </div>
+            <UserStoryList projectId={id} initialStories={project.userStories || []} />
           </div>
         </div>
 

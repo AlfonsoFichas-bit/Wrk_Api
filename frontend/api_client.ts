@@ -27,6 +27,21 @@ export interface ProjectMember {
   user?: User;
 }
 
+export interface UserStory {
+  id: string;
+  projectId: string;
+  title: string;
+  description: string;
+  acceptance?: string;
+  priority: string;
+  storyPoints: number;
+  status: string;
+  assigneeId?: string;
+  assignee?: User;
+  sprintId?: string;
+  createdAt?: string;
+}
+
 export interface AuthResponse {
   message: string;
   token: string;
@@ -73,6 +88,36 @@ export async function apiFetch<T = any>(endpoint: string, options: RequestInit =
 
   return response.json();
 }
+
+export const userStories = {
+  async getAll(): Promise<UserStory[]> {
+    const res = await apiFetch<ApiResponse<UserStory[]>>("/user-stories");
+    return res.data;
+  },
+  async getById(id: string): Promise<UserStory> {
+    const res = await apiFetch<ApiResponse<UserStory>>(`/user-stories/${id}`);
+    return res.data;
+  },
+  async create(storyData: Partial<UserStory>): Promise<UserStory> {
+    const res = await apiFetch<ApiResponse<UserStory>>("/user-stories/", {
+      method: "POST",
+      body: JSON.stringify(storyData),
+    });
+    return res.data;
+  },
+  async update(id: string, storyData: Partial<UserStory>): Promise<UserStory> {
+    const res = await apiFetch<ApiResponse<UserStory>>(`/user-stories/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(storyData),
+    });
+    return res.data;
+  },
+  async delete(id: string): Promise<void> {
+    await apiFetch(`/user-stories/${id}`, {
+      method: "DELETE",
+    });
+  }
+};
 
 export const projects = {
   async getAll(memberId?: string): Promise<Project[]> {
