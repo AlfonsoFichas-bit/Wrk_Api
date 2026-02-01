@@ -42,6 +42,17 @@ export interface UserStory {
   createdAt?: string;
 }
 
+export interface Sprint {
+  id: string;
+  projectId: string;
+  name: string;
+  description?: string;
+  startDate: string;
+  endDate: string;
+  status: string;
+  userStories?: UserStory[];
+}
+
 export interface AuthResponse {
   message: string;
   token: string;
@@ -88,6 +99,31 @@ export async function apiFetch<T = any>(endpoint: string, options: RequestInit =
 
   return response.json();
 }
+
+export const sprints = {
+  async getAll(): Promise<Sprint[]> {
+    const res = await apiFetch<ApiResponse<Sprint[]>>("/sprints/");
+    return res.data;
+  },
+  async getById(id: string): Promise<Sprint> {
+    const res = await apiFetch<ApiResponse<Sprint>>(`/sprints/${id}`);
+    return res.data;
+  },
+  async create(sprintData: Partial<Sprint>): Promise<Sprint> {
+    const res = await apiFetch<ApiResponse<Sprint>>("/sprints/", {
+      method: "POST",
+      body: JSON.stringify(sprintData),
+    });
+    return res.data;
+  },
+  async addStory(sprintId: string, userStoryId: string): Promise<UserStory> {
+    const res = await apiFetch<ApiResponse<UserStory>>(`/sprints/${sprintId}/add-story`, {
+      method: "POST",
+      body: JSON.stringify({ userStoryId }),
+    });
+    return res.data;
+  }
+};
 
 export const userStories = {
   async getAll(): Promise<UserStory[]> {

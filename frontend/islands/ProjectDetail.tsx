@@ -2,6 +2,8 @@ import { useEffect, useState } from "preact/hooks";
 import { projects, type Project } from "../../api_client.ts";
 import UserStoryList from "./UserStoryList.tsx";
 import CreateUserStoryForm from "./CreateUserStoryForm.tsx";
+import SprintList from "./SprintList.tsx";
+import CreateSprintForm from "./CreateSprintForm.tsx";
 
 export default function ProjectDetail({ id }: { id: string }) {
   const [project, setProject] = useState<Project | null>(null);
@@ -50,23 +52,21 @@ export default function ProjectDetail({ id }: { id: string }) {
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main Content: Sprints/Tasks */}
-        <div class="lg:col-span-2 space-y-6">
-          <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
-              <h2 class="font-bold text-gray-900">Sprints Activos</h2>
-              <span class="text-xs text-gray-500 uppercase font-bold tracking-wider">Ver todos</span>
+        <div class="lg:col-span-2 space-y-10">
+          <div class="space-y-4">
+            <div class="flex justify-between items-center px-2">
+              <h2 class="text-xl font-bold text-gray-900">Sprints</h2>
+              <CreateSprintForm projectId={id} />
             </div>
-            <div class="p-8 text-center text-gray-500 italic">
-              No hay sprints activos en este momento.
-            </div>
+            <SprintList sprints={project.sprints || []} />
           </div>
 
           <div class="space-y-4">
             <div class="flex justify-between items-center px-2">
-              <h2 class="text-xl font-bold text-gray-900">Backlog y Historias</h2>
+              <h2 class="text-xl font-bold text-gray-900">Backlog del Proyecto</h2>
               <CreateUserStoryForm projectId={id} />
             </div>
-            <UserStoryList projectId={id} initialStories={project.userStories || []} />
+            <UserStoryList projectId={id} initialStories={project.userStories || []} sprints={project.sprints || []} />
           </div>
         </div>
 
