@@ -4,6 +4,8 @@ import UserStoryList from "./UserStoryList.tsx";
 import CreateUserStoryForm from "./CreateUserStoryForm.tsx";
 import SprintList from "./SprintList.tsx";
 import CreateSprintForm from "./CreateSprintForm.tsx";
+import TaskBoard from "./TaskBoard.tsx";
+import CreateTaskForm from "./CreateTaskForm.tsx";
 
 export default function ProjectDetail({ id }: { id: string }) {
   const [project, setProject] = useState<Project | null>(null);
@@ -55,7 +57,22 @@ export default function ProjectDetail({ id }: { id: string }) {
         <div class="lg:col-span-2 space-y-10">
           <div class="space-y-4">
             <div class="flex justify-between items-center px-2">
-              <h2 class="text-xl font-bold text-gray-900">Sprints</h2>
+              <h2 class="text-xl font-bold text-gray-900">Ejecución y Tareas</h2>
+              <CreateTaskForm
+                projectId={id}
+                userStories={project.userStories || []}
+                members={project.members || []}
+              />
+            </div>
+            <TaskBoard
+              projectId={id}
+              members={project.members || []}
+            />
+          </div>
+
+          <div class="space-y-4">
+            <div class="flex justify-between items-center px-2">
+              <h2 class="text-xl font-bold text-gray-900">Planificación de Sprints</h2>
               <CreateSprintForm projectId={id} />
             </div>
             <SprintList sprints={project.sprints || []} />

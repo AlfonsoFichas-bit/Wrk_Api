@@ -42,6 +42,21 @@ export interface UserStory {
   createdAt?: string;
 }
 
+export interface Task {
+  id: string;
+  projectId: string;
+  userStoryId?: string;
+  sprintId?: string;
+  title: string;
+  description?: string;
+  priority: string;
+  status: string;
+  assigneeId?: string;
+  assignee?: User;
+  deadline?: string;
+  createdAt?: string;
+}
+
 export interface Sprint {
   id: string;
   projectId: string;
@@ -122,6 +137,37 @@ export const sprints = {
       body: JSON.stringify({ userStoryId }),
     });
     return res.data;
+  }
+};
+
+export const tasks = {
+  async getAll(projectId?: string): Promise<Task[]> {
+    const url = projectId ? `/tasks?projectId=${projectId}` : "/tasks";
+    const res = await apiFetch<ApiResponse<Task[]>>(url);
+    return res.data;
+  },
+  async getById(id: string): Promise<Task> {
+    const res = await apiFetch<ApiResponse<Task>>(`/tasks/${id}`);
+    return res.data;
+  },
+  async create(taskData: Partial<Task>): Promise<Task> {
+    const res = await apiFetch<ApiResponse<Task>>("/tasks/", {
+      method: "POST",
+      body: JSON.stringify(taskData),
+    });
+    return res.data;
+  },
+  async update(id: string, taskData: Partial<Task>): Promise<Task> {
+    const res = await apiFetch<ApiResponse<Task>>(`/tasks/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(taskData),
+    });
+    return res.data;
+  },
+  async delete(id: string): Promise<void> {
+    await apiFetch(`/tasks/${id}`, {
+      method: "DELETE",
+    });
   }
 };
 

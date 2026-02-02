@@ -5,6 +5,8 @@ import (
 	"os"
 
 	"Wrk_Api/internal/models"
+	"Wrk_Api/internal/utils"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -50,4 +52,28 @@ func Connect() {
 	}
 
 	log.Println("Database migration completed")
+
+	// Seed Admin
+	seedAdmin()
+}
+
+func seedAdmin() {
+	var count int64
+	DB.Model(&models.User{}).Count(&count)
+	if count == 0 {
+		hashedPassword, _ := bcrypt.GenerateFromPassword([]byte("admin123"), 10)
+		admin := models.User{
+			ID:       utils.GenerateCUID(),
+			Name:     "Admin System",
+			Email:    "admin@workflo.ws",
+			Password: string(hashedPassword),
+			Role:     "ADMIN",
+			Active:   true,
+		}
+		if err := DB.Create(&admin).Error; err != nil {
+			log.Println("Error seeding admin:", err)
+		} else {
+			log.Println("Default admin created: admin@workflo.ws / admin123")
+		}
+	}
 }

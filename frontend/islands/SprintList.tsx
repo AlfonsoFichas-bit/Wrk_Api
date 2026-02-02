@@ -46,12 +46,13 @@ export default function SprintList({ sprints }: SprintListProps) {
                      {sprint.userStories?.length || 0} Historias de Usuario
                    </span>
                 </div>
-                <button
+                <a
+                  href={`/dashboard/sprints/${sprint.id}`}
                   class="text-primary text-sm font-bold hover:underline flex items-center gap-1"
                 >
                   Ver Tablero
                   <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                </button>
+                </a>
               </div>
             </div>
           ))
