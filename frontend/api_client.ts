@@ -57,6 +57,46 @@ export interface Task {
   createdAt?: string;
 }
 
+export interface Rubric {
+  id: string;
+  projectId?: string;
+  name: string;
+  description?: string;
+  criteria?: Criteria[];
+  createdAt: string;
+}
+
+export interface Criteria {
+  id: string;
+  rubricId: string;
+  name: string;
+  description?: string;
+  maxScore: number;
+  weight: number;
+}
+
+export interface Evaluation {
+  id: string;
+  projectId: string;
+  taskId?: string;
+  sprintId?: string;
+  evaluatorId: string;
+  evaluator?: User;
+  score?: number;
+  feedback?: string;
+  status: string;
+  createdAt: string;
+  criteria?: EvaluationCriteria[];
+}
+
+export interface EvaluationCriteria {
+  id: string;
+  evaluationId: string;
+  criteriaId: string;
+  criteria?: Criteria;
+  score: number;
+}
+
 export interface Sprint {
   id: string;
   projectId: string;
@@ -137,6 +177,46 @@ export const sprints = {
       body: JSON.stringify({ userStoryId }),
     });
     return res.data;
+  }
+};
+
+export const rubrics = {
+  async getAll(projectId?: string): Promise<Rubric[]> {
+    const url = projectId ? `/rubrics?projectId=${projectId}` : "/rubrics";
+    const res = await apiFetch<ApiResponse<Rubric[]>>(url);
+    return res.data;
+  },
+  async getById(id: string): Promise<Rubric> {
+    const res = await apiFetch<ApiResponse<Rubric>>(`/rubrics/${id}`);
+    return res.data;
+  },
+  async create(rubricData: any): Promise<any> {
+    return apiFetch("/rubrics/", {
+      method: "POST",
+      body: JSON.stringify(rubricData),
+    });
+  },
+  async delete(id: string): Promise<void> {
+    await apiFetch(`/rubrics/${id}`, {
+      method: "DELETE",
+    });
+  }
+};
+
+export const evaluations = {
+  async getByTask(taskId: string): Promise<Evaluation[]> {
+    const res = await apiFetch<ApiResponse<Evaluation[]>>(`/evaluations/task/${taskId}`);
+    return res.data;
+  },
+  async getBySprint(sprintId: string): Promise<Evaluation[]> {
+    const res = await apiFetch<ApiResponse<Evaluation[]>>(`/evaluations/sprint/${sprintId}`);
+    return res.data;
+  },
+  async create(evalData: any): Promise<any> {
+    return apiFetch("/evaluations/", {
+      method: "POST",
+      body: JSON.stringify(evalData),
+    });
   }
 };
 

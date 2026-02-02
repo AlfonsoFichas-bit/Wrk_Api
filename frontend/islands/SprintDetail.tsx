@@ -2,6 +2,7 @@ import { useEffect, useState } from "preact/hooks";
 import { sprints, projects, type Sprint, type Project } from "../../api_client.ts";
 import TaskBoard from "./TaskBoard.tsx";
 import CreateTaskForm from "./CreateTaskForm.tsx";
+import EvaluationModule from "./EvaluationModule.tsx";
 
 export default function SprintDetail({ id }: { id: string }) {
   const [sprint, setSprint] = useState<Sprint | null>(null);
@@ -66,11 +67,24 @@ export default function SprintDetail({ id }: { id: string }) {
         </p>
       </header>
 
-      <TaskBoard
-        projectId={sprint.projectId}
-        sprintId={sprint.id}
-        members={project.members || []}
-      />
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2">
+          <TaskBoard
+            projectId={sprint.projectId}
+            sprintId={sprint.id}
+            members={project.members || []}
+          />
+        </div>
+        <div class="space-y-6">
+          <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+            <EvaluationModule
+              projectId={sprint.projectId}
+              sprintId={sprint.id}
+              title={sprint.name}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

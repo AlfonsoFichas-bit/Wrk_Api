@@ -6,6 +6,7 @@ import SprintList from "./SprintList.tsx";
 import CreateSprintForm from "./CreateSprintForm.tsx";
 import TaskBoard from "./TaskBoard.tsx";
 import CreateTaskForm from "./CreateTaskForm.tsx";
+import RubricManager from "./RubricManager.tsx";
 
 export default function ProjectDetail({ id }: { id: string }) {
   const [project, setProject] = useState<Project | null>(null);
@@ -115,6 +116,15 @@ export default function ProjectDetail({ id }: { id: string }) {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
+              <h2 class="font-bold text-gray-900">Rúbricas</h2>
+            </div>
+            <div class="p-4">
+               <RubricManager projectId={id} />
             </div>
           </div>
 
